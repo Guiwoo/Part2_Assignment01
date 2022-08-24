@@ -1,12 +1,16 @@
 package com.zerobase.fastlms.configuration;
 
-import lombok.extern.slf4j.Slf4j;
+import com.zerobase.fastlms.member.entity.MemberLoginHistory;
+import com.zerobase.fastlms.member.repository.MemberLoginHistoryRepository;
+import com.zerobase.fastlms.member.repository.MemberRepository;
+import lombok.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
@@ -16,16 +20,16 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@Slf4j
+@Component
+@RequiredArgsConstructor
 public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
-
-    private final String LOCALHOST_IPV4 = "127.0.0.1";
-    private final String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+    private final MemberRepository memberRepository;
+    private final MemberLoginHistoryRepository memberLoginHistoryRepository;
 
     @Override
     public void onAuthenticationSuccess(
@@ -33,6 +37,23 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
             HttpServletResponse res,
             Authentication authentication) throws IOException, ServletException {
         // Save data on login history and member as well
+
+        String userId = authentication.getName();
+        memberRepository.findById(userId).ifPresent(e -> {
+            e.setLastLoginAt(LocalDateTime.now());
+            memberRepository.save(e);
+        });
+
+        String userAgent = getAgent(req);
+        String ip = getIP(req);
+
+        memberLoginHistoryRepository.save(MemberLoginHistory.builder()
+                        .userId(userId)
+                        .userAgent(userAgent)
+                        .loginIp(ip)
+                        .loginDate(LocalDateTime.now())
+                        .build());
+
         handle(req, res, authentication);
         clearAuthenticationAttributes(req);
     }
@@ -42,11 +63,11 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
             HttpServletResponse response,
             Authentication authentication
     ) throws IOException {
-
+        RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
-            log.debug(
+            System.out.println(
                     "Response has already been committed. Unable to redirect to "
                             + targetUrl);
             return;
@@ -80,10 +101,12 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
 
-    private String getAgent(HttpServletRequest req){
+    protected String getAgent(HttpServletRequest req){
             return req.getHeader("user-agent");
     }
-    private String getIP(HttpServletRequest request){
+    protected String getIP(HttpServletRequest request){
+        String LOCALHOST_IPV4 = "127.0.0.1";
+        String LOCALHOST_IPV6 = "0:0:0:0:0:0:0:1";
         String ipAddress = request.getHeader("X-Forwarded-For");
         if(ipAddress == null || "unknown".equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getHeader("Proxy-Client-IP");

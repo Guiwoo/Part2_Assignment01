@@ -1,16 +1,19 @@
 package com.zerobase.fastlms.member.service.impl;
 
 import com.zerobase.fastlms.admin.dto.MemberDto;
+import com.zerobase.fastlms.admin.dto.MemberLoginHistoryDto;
 import com.zerobase.fastlms.admin.mapper.MemberMapper;
 import com.zerobase.fastlms.admin.model.MemberParam;
 import com.zerobase.fastlms.components.MailComponents;
 import com.zerobase.fastlms.course.model.ServiceResult;
 import com.zerobase.fastlms.member.entity.Member;
 import com.zerobase.fastlms.member.entity.MemberCode;
+import com.zerobase.fastlms.member.entity.MemberLoginHistory;
 import com.zerobase.fastlms.member.exception.MemberNotEmailAuthException;
 import com.zerobase.fastlms.member.exception.MemberStopUserException;
 import com.zerobase.fastlms.member.model.MemberInput;
 import com.zerobase.fastlms.member.model.ResetPasswordInput;
+import com.zerobase.fastlms.member.repository.MemberLoginHistoryRepository;
 import com.zerobase.fastlms.member.repository.MemberRepository;
 import com.zerobase.fastlms.member.service.MemberService;
 import com.zerobase.fastlms.util.PasswordUtils;
@@ -23,10 +26,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
-import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +41,7 @@ public class MemberServiceImpl implements MemberService {
     private final MailComponents mailComponents;
     
     private final MemberMapper memberMapper;
+    private final MemberLoginHistoryRepository memberLoginHistoryRepository;
     
     /**
      * 회원 가입
@@ -270,7 +271,19 @@ public class MemberServiceImpl implements MemberService {
         
         return new ServiceResult();
     }
-    
+
+    @Override
+    public List<MemberLoginHistoryDto> getMemberLoginHistory(String userid) {
+        List<MemberLoginHistoryDto> result = new ArrayList<>();
+        List<MemberLoginHistory> lists=
+                memberLoginHistoryRepository.findByIdLimit(userid);
+        if(lists.size() < 1) return result;
+        for(MemberLoginHistory m: lists){
+            result.add(MemberLoginHistoryDto.of(m));
+        }
+        return result;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

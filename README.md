@@ -4,13 +4,14 @@
 - [x] DB 연결 AWS_EC2 (MariaDB)
   - [x] .properties file 구성
 
-- [] 로그인 기록 저장
+- [x] 로그인 기록 저장
   - [x] 로그인 테이블 생성.
   - [x] 로그인 룰에 따른 리다이렉트 페이지 변경 
-  - [] Login Id,Login Date(need to parse), Ip, UserAgent
+  - [x] Login Id,Login Date(need to parse), Ip, UserAgent
+  - [x] 관리자 정보 디테일 로그인의 마지막 5개의 데이터 보여주기
 
 
-- [] Show up Login History List on Member Detail (Admin)
+- [x] Show up Login History List on Member Detail (Admin)
 
 
 - [] Banner Management(Admin)

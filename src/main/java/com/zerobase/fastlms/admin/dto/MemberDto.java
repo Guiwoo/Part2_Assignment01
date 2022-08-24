@@ -21,6 +21,7 @@ public class MemberDto {
     String password;
     LocalDateTime regDt;
     LocalDateTime udtDt;
+    LocalDateTime lastLoginAt;
     
     boolean emailAuthYn;
     LocalDateTime emailAuthDt;
@@ -57,7 +58,7 @@ public class MemberDto {
                 .resetPasswordLimitDt(member.getResetPasswordLimitDt())
                 .adminYn(member.isAdminYn())
                 .userStatus(member.getUserStatus())
-                
+                .lastLoginAt(member.getLastLoginAt())
                 .zipcode(member.getZipcode())
                 .addr(member.getAddr())
                 .addrDetail(member.getAddrDetail())
@@ -70,11 +71,15 @@ public class MemberDto {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
         return regDt != null ? regDt.format(formatter) : "";
     }
-    
+
+    public String getLastLoginAtText() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        return lastLoginAt != null ? lastLoginAt.format(formatter) : "";
+    }
+
     public String getUdtDtText() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
         return udtDt != null ? udtDt.format(formatter) : "";
-        
     }
     
 }
