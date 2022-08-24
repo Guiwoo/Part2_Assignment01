@@ -23,14 +23,15 @@ public class Member implements MemberCode {
     private String password;
     private LocalDateTime regDt;
     private LocalDateTime udtDt;//회원정보 수정일
-    
+    private LocalDateTime lastLoginAt;
+
     private boolean emailAuthYn;
     private LocalDateTime emailAuthDt;
     private String emailAuthKey;
-    
+
     private String resetPasswordKey;
     private LocalDateTime resetPasswordLimitDt;
-    
+
     private boolean adminYn;
     
     private String userStatus;//이용가능한상태, 정지상태
