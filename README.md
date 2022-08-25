@@ -10,9 +10,8 @@
   - [x] Login Id,Login Date(need to parse), Ip, UserAgent
   - [x] 관리자 정보 디테일 로그인의 마지막 5개의 데이터 보여주기
 
-
 - [x] Show up Login History List on Member Detail (Admin)
 
-
 - [] Banner Management(Admin)
+  - [x] Html Layer Done
   - [] ImgFile, Alter TExt, HyperLink Url,Order By something

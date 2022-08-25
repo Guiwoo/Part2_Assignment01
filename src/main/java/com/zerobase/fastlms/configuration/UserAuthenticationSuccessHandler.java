@@ -36,7 +36,6 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
             HttpServletRequest req,
             HttpServletResponse res,
             Authentication authentication) throws IOException, ServletException {
-        // Save data on login history and member as well
 
         String userId = authentication.getName();
         memberRepository.findById(userId).ifPresent(e -> {
