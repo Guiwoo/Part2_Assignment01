@@ -51,8 +51,7 @@
                     배너명
                 </th>
                 <td>
-<!--                    <input th:value="${detail.subject}" type="text" name="subject" required placeholder="강좌명 입력" />-->
-                    <input type="text" name="name" required placeholder="배너 명 입력" />
+                    <input th:value="${detail.getName()}" type="text" name="name" required placeholder="배너 명 입력" />
                 </td>
             </tr>
 
@@ -61,8 +60,7 @@
                     배너파일
                 </th>
                 <td>
-<!--                    <input th:value="${detail.keyword}" type="text" name="keyword" required placeholder="키워드 입력" />-->
-                    <input type="file" name="file" accept="image/*" required placeholder="배너 파일" />
+                    <input type="file" name="file" th:required="${#strings.isEmpty(detail.getFilePath())}" />
                 </td>
             </tr>
             <tr>
@@ -70,7 +68,7 @@
                     링크주소
                 </th>
                 <td>
-                    <input type="text" name="linkPath" required placeholder="링크 주소" />
+                    <input th:value="${detail.getLinkPath()}" type="text" name="linkPath" required placeholder="링크 주소" />
                 </td>
             </tr>
             <tr>
@@ -80,9 +78,8 @@
                 <td>
                     <label>
                         <select name="openMethod">
-                            <option value=""> 오픈 방법 선택 </option>
                             <option value="NEW_PAGE">새 페이지</option>
-                            <option value="CURRENT_PAGE">현재 페이지</option>
+                            <option value="CURRENT_PAGE" th:target="${detail.getOpenMethod() eq 'CURRENT_PAGE'}">현재 페이지</option>
                         </select>
                     </label>
                 </td>
@@ -93,7 +90,7 @@
                     정렬 순서
                 </th>
                 <td>
-                    <input type="number" name="orderNumber" required placeholder="정렬 순서" />
+                    <input th:value="${detail.getOrderNumber()}" type="number" name="orderNumber" required placeholder="정렬 순서" />
                 </td>
             </tr>
 
@@ -103,7 +100,7 @@
                     공개여부
                 </th>
                 <td style="display: flex; align-items: center" >
-                    <input type="checkbox" id="checkbox1" name="isPublic" value="true" />
+                    <input th:checked="${detail.isPublic}" type="checkbox" id="checkbox1" name="isPublic" value="true" />
                     <p>공개</p>
                 </td>
             </tr>
@@ -111,9 +108,8 @@
         </table>
 
         <div class="buttons">
-<!--            <button th:if="${editMode}" type="submit"> 강좌 수정 하기 </button>-->
-<!--            <button th:if="${!editMode}" type="submit"> 강좌 등록 하기 </button>-->
-            <button type="submit"> 강좌 등록 하기 </button>
+            <button th:if="${editMode}" type="submit"> 배너 수정 하기 </button>
+            <button th:if="${editMode eq false}" type="submit"> 배너 등록 하기 </button>
             <a href="/admin/banner/lists.do"> 목록 이동 </a>
         </div>
 

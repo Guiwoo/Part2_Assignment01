@@ -50,11 +50,31 @@ public class AdminBannerController extends BaseController {
         return "admin/banner/list";
     }
 
-    @GetMapping("/add.do")
-    public String getAdd(){
+    @GetMapping(value = {"/add.do","/edit.do"})
+    public String getAdd(Model model,
+                         HttpServletRequest req,
+                         BannerInput bannerInput){
+
+        boolean editMode = req.getRequestURI().contains("/edit.do");
+        BannerDto detail = new BannerDto();
+
+        if(editMode){
+            long id = bannerInput.getId();
+            BannerDto existBanner = bannerService.getById(id);
+            if (existBanner == null) {
+                // error 처리
+                model.addAttribute("message", "배너정보가 존재하지 않습니다.");
+                return "common/error";
+            }
+            detail = existBanner;
+        }
+
+        model.addAttribute("editMode", editMode);
+        model.addAttribute("detail", detail);
+
         return "admin/banner/add";
     }
-    @PostMapping("/add.do")
+    @PostMapping(value = {"/add.do","/edit.do"})
     public String postAdd(
                 Model model,
                 MultipartFile file,
@@ -65,7 +85,7 @@ public class AdminBannerController extends BaseController {
         String saveFilename = "";
         String urlFilename = "";
 
-        if(file != null){
+        if(file != null && !file.getOriginalFilename().equals("")){
             String originalFilename = file.getOriginalFilename();
 
             File abPath = new File("");
@@ -84,18 +104,18 @@ public class AdminBannerController extends BaseController {
                 log.info("############################ - 1");
                 log.info(e.getMessage());
             }
+            bannerInput.setFilePath(saveFilename);
+            bannerInput.setLinkPath(urlFilename);
         }
-        bannerInput.setFilePath(saveFilename);
-        bannerInput.setLinkPath(urlFilename);
         if(editMode){
-//            long id = parameter.getId();
-//            BannerDto existBanner = bannerService.getById(id);
-//            if (existBanner == null) {
-//                // error 처리
-//                model.addAttribute("message", "배너정보가 존재하지 않습니다.");
-//                return "common/error";
-//            }
-//            boolean result = bannerService.set(parameter);
+            long id = bannerInput.getId();
+            BannerDto existBanner = bannerService.getById(id);
+            if (existBanner == null) {
+                // error 처리
+                model.addAttribute("message", "배너정보가 존재하지 않습니다.");
+                return "common/error";
+            }
+            boolean result = bannerService.update(bannerInput);
         }else{
             boolean result = bannerService.add(bannerInput);
         }

@@ -12,6 +12,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,19 @@ public class BannerServiceImpl implements BannerService{
 
     @Override
     public boolean update(BannerInput bannerInput) {
-        return false;
+        Optional<Banner> oBanner= bannerRepository.findById(bannerInput.getId());
+        if(oBanner.isPresent()){
+            Banner b = oBanner.get();
+            b.setName(bannerInput.getName());
+            b.setFilePath(bannerInput.getFilePath());
+            b.setLinkPath(bannerInput.getLinkPath());
+            b.setOpenMethod(bannerInput.getOpenMethod());
+            b.setOrderNumber(bannerInput.getOrderNumber());
+            b.setCreatedAt(LocalDateTime.now());
+            b.setPublic(bannerInput.getIsPublic().equals("true"));
+            bannerRepository.save(b);
+        }
+        return true;
     }
 
     @Override
@@ -60,5 +73,11 @@ public class BannerServiceImpl implements BannerService{
         }
 
         return list;
+    }
+
+    @Override
+    public BannerDto getById(long id) {
+        Banner banner = bannerRepository.getById(id);
+        return BannerDto.of(banner);
     }
 }

@@ -12,4 +12,6 @@ public interface BannerService {
     boolean delete(String id);
 
     List<BannerDto> list(BannerParam bannerParam);
+
+    BannerDto getById(long id);
 }
