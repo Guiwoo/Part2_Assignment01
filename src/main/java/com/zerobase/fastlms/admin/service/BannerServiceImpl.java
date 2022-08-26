@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,8 +56,15 @@ public class BannerServiceImpl implements BannerService{
     }
 
     @Override
-    public boolean delete(String id) {
-        return false;
+    public boolean delete(String idList) {
+        if (idList != null && idList.length() > 0) {
+            String[] ids = idList.split(",");
+            for (String i : ids) {
+                Long id = Long.parseLong(i);
+                bannerRepository.deleteById(id);
+            }
+        }
+        return true;
     }
 
     @Override
@@ -79,5 +87,15 @@ public class BannerServiceImpl implements BannerService{
     public BannerDto getById(long id) {
         Banner banner = bannerRepository.getById(id);
         return BannerDto.of(banner);
+    }
+
+    @Override
+    public List<BannerDto> getIndexBanner() {
+        List<Banner> banners = bannerRepository.getIndexBanner();
+        List<BannerDto> list = new ArrayList<>();
+        for(Banner b : banners){
+            list.add(BannerDto.of(b));
+        }
+        return list;
     }
 }

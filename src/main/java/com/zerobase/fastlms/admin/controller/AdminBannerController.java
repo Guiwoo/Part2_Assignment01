@@ -159,4 +159,10 @@ public class AdminBannerController extends BaseController {
 
         return new String[]{newFilename, newUrlFilename};
     }
+
+    @PostMapping("/delete.do")
+    public String delete(BannerInput input){
+        bannerService.delete(input.getIdList());
+        return "redirect:/admin/banner/lists.do";
+    }
 }

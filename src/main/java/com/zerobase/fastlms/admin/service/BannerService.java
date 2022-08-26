@@ -14,4 +14,6 @@ public interface BannerService {
     List<BannerDto> list(BannerParam bannerParam);
 
     BannerDto getById(long id);
+
+    List<BannerDto> getIndexBanner();
 }

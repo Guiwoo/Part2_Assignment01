@@ -16,4 +16,6 @@ public class BannerInput {
     private int orderNumber;
     //need to handle later for boolean type
     private String isPublic;
+
+    private String idList;
 }

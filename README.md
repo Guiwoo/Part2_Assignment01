@@ -12,11 +12,11 @@
 
 - [x] Show up Login History List on Member Detail (Admin)
 
-- [] Banner Management(Admin)
+- [x] Banner Management(Admin)
   - [x] Html Layer Done
   - [x] List page
     - [x] Register Common Resource Page
-    - [] On Banner Title add a HyperLink for edit banner
+    - [x] On Banner Title add a HyperLink for edit banner
   - [x] Add page
-    - [] Need to set Edit page as well
-  - [] ImgFile, Alter TExt, HyperLink Url,Order By something
+    - [x] Need to set Edit page as well
+  - [x] ImgFile, Alter TExt, HyperLink Url,Order By something

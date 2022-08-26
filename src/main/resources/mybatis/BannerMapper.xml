@@ -46,7 +46,7 @@
         from banner
         where 1 = 1
         <include refid="selectListWhere"/>
-        order by created_at desc
+        order by order_number desc
         limit #{pageStart}, #{pageEnd}
     </select>
 
