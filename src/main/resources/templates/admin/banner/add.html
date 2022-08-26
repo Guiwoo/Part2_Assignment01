@@ -27,26 +27,17 @@
             cursor: pointer;
         }
     </style>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function() {
-
             $('#submitForm').on('submit', function() {
 
-                // 에디터의 내용이 textarea에 적용된다.
-                oEditors.getById["contents"].exec("UPDATE_CONTENTS_FIELD", []);
-
-
-
             });
-
-
         });
     </script>
 </head>
 <body>
-<!--<div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>-->
+<div th:replace="/fragments/layout.html :: fragment-admin-body-menu"></div>
 <h1>배너 관리 - 배너 등록</h1>
 
 <div class="detail">
@@ -61,7 +52,7 @@
                 </th>
                 <td>
 <!--                    <input th:value="${detail.subject}" type="text" name="subject" required placeholder="강좌명 입력" />-->
-                    <input type="text" name="title" required placeholder="배너 명 입력" />
+                    <input type="text" name="name" required placeholder="배너 명 입력" />
                 </td>
             </tr>
 
@@ -71,7 +62,7 @@
                 </th>
                 <td>
 <!--                    <input th:value="${detail.keyword}" type="text" name="keyword" required placeholder="키워드 입력" />-->
-                    <input type="file" name="file" required placeholder="배너 파일" />
+                    <input type="file" name="file" accept="image/*" required placeholder="배너 파일" />
                 </td>
             </tr>
             <tr>
@@ -79,7 +70,7 @@
                     링크주소
                 </th>
                 <td>
-                    <input type="text" name="link" required placeholder="링크 주소" />
+                    <input type="text" name="linkPath" required placeholder="링크 주소" />
                 </td>
             </tr>
             <tr>
@@ -88,10 +79,10 @@
                 </th>
                 <td>
                     <label>
-                        <select>
+                        <select name="openMethod">
                             <option value=""> 오픈 방법 선택 </option>
-                            <option value="newPage">새 페이지</option>
-                            <option value="currentPage">현재 페이지</option>
+                            <option value="NEW_PAGE">새 페이지</option>
+                            <option value="CURRENT_PAGE">현재 페이지</option>
                         </select>
                     </label>
                 </td>
@@ -102,7 +93,7 @@
                     정렬 순서
                 </th>
                 <td>
-                    <input type="number" name="order" required placeholder="정렬 순서" />
+                    <input type="number" name="orderNumber" required placeholder="정렬 순서" />
                 </td>
             </tr>
 
@@ -112,9 +103,7 @@
                     공개여부
                 </th>
                 <td style="display: flex; align-items: center" >
-                    <label>
-                        <input type="checkbox">
-                    </label>
+                    <input type="checkbox" id="checkbox1" name="isPublic" value="true" />
                     <p>공개</p>
                 </td>
             </tr>
@@ -131,24 +120,5 @@
     </form>
 </div>
 
-
-<!--<script type="text/javascript" src="/res/se2/js/service/HuskyEZCreator.js" charset="utf-8"></script>-->
-<!--<script type="text/javascript">-->
-
-<!--    var oEditors = [];-->
-
-<!--    setTimeout(function() {-->
-
-<!--        nhn.husky.EZCreator.createInIFrame({-->
-<!--            oAppRef: oEditors,-->
-<!--            elPlaceHolder: "contents",-->
-<!--            sSkinURI: "/res/se2/SmartEditor2Skin.html",-->
-<!--            fCreator: "createSEditor2"-->
-<!--        });-->
-
-
-<!--    }, 100);-->
-
-<!--</script>-->
 </body>
 </html>

@@ -14,4 +14,9 @@
 
 - [] Banner Management(Admin)
   - [x] Html Layer Done
+  - [x] List page
+    - [x] Register Common Resource Page
+    - [] On Banner Title add a HyperLink for edit banner
+  - [x] Add page
+    - [] Need to set Edit page as well
   - [] ImgFile, Alter TExt, HyperLink Url,Order By something
