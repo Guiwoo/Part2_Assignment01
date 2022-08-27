@@ -18,7 +18,7 @@ public class MainController {
     
     @RequestMapping("/")
     public String index(Model model) {
-        
+        System.out.println("✅Run");
         List<BannerDto> banners = bannerService.getIndexBanner();
         model.addAttribute("banners", banners);
         return "index";
